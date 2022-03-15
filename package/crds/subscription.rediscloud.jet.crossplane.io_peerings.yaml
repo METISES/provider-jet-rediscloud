@@ -5,18 +5,18 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.8.0
   creationTimestamp: null
-  name: resources.null.template.jet.crossplane.io
+  name: peerings.subscription.rediscloud.jet.crossplane.io
 spec:
-  group: null.template.jet.crossplane.io
+  group: subscription.rediscloud.jet.crossplane.io
   names:
     categories:
     - crossplane
     - managed
-    - templatejet
-    kind: Resource
-    listKind: ResourceList
-    plural: resources
-    singular: resource
+    - rediscloudjet
+    kind: Peering
+    listKind: PeeringList
+    plural: peerings
+    singular: peering
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -35,7 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Resource is the Schema for the Resources API
+        description: Peering is the Schema for the Peerings API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -50,7 +50,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: ResourceSpec defines the desired state of Resource
+            description: PeeringSpec defines the desired state of Peering
             properties:
               deletionPolicy:
                 default: Delete
@@ -63,13 +63,33 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  triggers:
-                    additionalProperties:
-                      type: string
-                    description: A map of arbitrary strings that, when changed, will
-                      force the null resource to be replaced, re-running any associated
-                      provisioners.
-                    type: object
+                  awsAccountId:
+                    description: AWS account id that the VPC to be peered lives in
+                    type: string
+                  gcpNetworkName:
+                    description: The name of the network to be peered
+                    type: string
+                  gcpProjectId:
+                    description: GCP project ID that the VPC to be peered lives in
+                    type: string
+                  providerName:
+                    description: The cloud provider to use with the vpc peering, (either
+                      `AWS` or `GCP`)
+                    type: string
+                  region:
+                    description: AWS Region that the VPC to be peered lives in
+                    type: string
+                  subscriptionId:
+                    description: A valid subscription predefined in the current account
+                    type: string
+                  vpcCidr:
+                    description: CIDR range of the VPC to be peered
+                    type: string
+                  vpcId:
+                    description: Identifier of the VPC to be peered
+                    type: string
+                required:
+                - subscriptionId
                 type: object
               providerConfigRef:
                 default:
@@ -116,11 +136,21 @@ spec:
             - forProvider
             type: object
           status:
-            description: ResourceStatus defines the observed state of Resource.
+            description: PeeringStatus defines the observed state of Peering.
             properties:
               atProvider:
                 properties:
+                  awsPeeringId:
+                    type: string
+                  gcpPeeringId:
+                    type: string
+                  gcpRedisNetworkName:
+                    type: string
+                  gcpRedisProjectId:
+                    type: string
                   id:
+                    type: string
+                  status:
                     type: string
                 type: object
               conditions:

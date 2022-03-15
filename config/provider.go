@@ -25,8 +25,8 @@ import (
 )
 
 const (
-	resourcePrefix = "template"
-	modulePath     = "github.com/crossplane-contrib/provider-jet-template"
+	resourcePrefix = "rediscloud"
+	modulePath     = "github.com/timgchile/provider-jet-rediscloud"
 )
 
 //go:embed schema.json
